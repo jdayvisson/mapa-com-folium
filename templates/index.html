@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Selecione o Estado</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h1>Selecione o Estado em que Moras:</h1>
+
+<select id="estado" onchange="atualizarMapa()">
+    <option value="SP">São Paulo</option>
+    <option value="RJ">Rio de Janeiro</option>
+</select>
+
+<div id="mapa" style="height: 400px;"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    var mapa = L.map('mapa').setView([-23.550520, -46.633308], 6); // Inicializa o mapa com o centro do Brasil
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(mapa);
+
+    var marcadores = {
+        "SP": [-23.550520, -46.633308], // São Paulo
+        "RJ": [-22.906388, -43.172222], // Rio de Janeiro
+    };
+
+    // Adiciona marcadores para todos os estados
+    Object.keys(marcadores).forEach(function(estado) {
+        L.marker(marcadores[estado]).addTo(mapa).bindPopup(estado);
+    });
+
+    function atualizarMapa() {
+        var estadoSelecionado = $("#estado").val();
+        mapa.setView(marcadores[estadoSelecionado], 10); // Muda a visualização do mapa para o estado selecionado
+    }
+</script>
+
+</body>
+</html>
